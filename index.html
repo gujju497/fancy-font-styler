@@ -4,59 +4,91 @@
   <meta name="google-site-verification" content="dGlhq8QRg_lBUYmFqdeXj1dpswV9UuMjMFEZARpbapA" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fancy Font Generator - Stylish Text Copy & Paste for Instagram & WhatsApp</title>
-  <meta name="description" content="Free Fancy Font Generator. Generate stylish unicode fonts for Instagram bio, TikTok, WhatsApp, and gaming names. One-click copy and paste.">
+  <title>Fancy Font Generator - 200+ Stylish Text & Bio Styles</title>
+  <meta name="description" content="Generate 200+ fancy stylish fonts, Hindi/Devanagari look English, gaming symbols, and bio styles for Instagram, WhatsApp, and BGMI. One click copy.">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .copy-toast {
+      animation: fadeInOut 1.5s ease-in-out;
+    }
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(10px); }
+      20% { opacity: 1; transform: translateY(0); }
+      80% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-10px); }
+    }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col items-center p-4 sm:p-8">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col items-center p-3 sm:p-6">
 
-  <header class="max-w-xl w-full text-center mb-6">
-    <div class="inline-block p-3 bg-violet-100 text-violet-700 rounded-2xl mb-3 shadow-sm text-2xl">
-      ✨
+  <!-- Header -->
+  <header class="max-w-2xl w-full text-center mb-5">
+    <div class="inline-flex items-center gap-2 px-3 py-1 bg-violet-100 text-violet-700 rounded-full text-xs font-semibold mb-2">
+      ⚡ 200+ Unique Font Variations
     </div>
-    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Fancy Font Generator</h1>
-    <p class="text-sm text-slate-600 mt-1">Type your text below to get 15+ stylish font styles for your bio, messages, or profiles.</p>
+    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Fancy Font & Bio Generator</h1>
+    <p class="text-xs sm:text-sm text-slate-600 mt-1">Copy and paste 200+ stylish fonts for Instagram bio, WhatsApp, BGMI, and TikTok.</p>
   </header>
 
-  <main class="max-w-xl w-full space-y-4">
+  <main class="max-w-2xl w-full space-y-4">
     
-    <!-- Input Box -->
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4">
-      <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Type or Paste Text Here</label>
-      <input type="text" id="inputText" value="Fancy Text" placeholder="Type something..." class="w-full p-3.5 bg-slate-50 border border-slate-300 rounded-xl font-medium focus:ring-2 focus:ring-violet-500 outline-none text-base">
+    <!-- Input Sticky Card -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sticky top-2 z-20">
+      <div class="flex items-center justify-between mb-2">
+        <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">Enter your text</label>
+        <span id="resultCount" class="text-xs font-semibold text-violet-600 bg-violet-50 px-2 py-0.5 rounded-full">215 Styles Ready</span>
+      </div>
+      <input type="text" id="inputText" value="Rahul" placeholder="Type text here..." class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl font-semibold focus:ring-2 focus:ring-violet-500 outline-none text-base sm:text-lg">
     </div>
 
     <!-- Output List -->
-    <div id="resultsList" class="space-y-2.5">
-      <!-- Dynamic font cards will appear here -->
+    <div id="resultsList" class="space-y-2">
+      <!-- 200+ cards injected here -->
     </div>
 
   </main>
 
-  <footer class="mt-12 text-center text-xs text-slate-400">
-    100% Free Client-Side Tool. Unicode based.
+  <!-- Global Toast -->
+  <div id="toast" class="fixed bottom-6 bg-slate-900 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl shadow-lg hidden z-30">
+    Copied to clipboard! ✨
+  </div>
+
+  <footer class="mt-12 text-center text-xs text-slate-400 pb-8">
+    100% Free & Unlimited. Works completely offline in your browser.
   </footer>
 
   <script>
     const input = document.getElementById('inputText');
     const results = document.getElementById('resultsList');
+    const toast = document.getElementById('toast');
+    const countBadge = document.getElementById('resultCount');
 
-    // Unicode maps for font styles
-    const styles = [
-      { name: "Bold Script", fn: t => transform(t, 0x1D4D0, 0x1D4EA, 0) },
-      { name: "Double Struck / Outline", fn: t => transform(t, 0x1D538, 0x1D552, 0x1D7D8) },
-      { name: "Fraktur / Gothic", fn: t => transform(t, 0x1D56C, 0x1D586, 0) },
-      { name: "Monospace", fn: t => transform(t, 0x1D670, 0x1D68A, 0x1D7F6) },
-      { name: "Sans-Serif Bold", fn: t => transform(t, 0x1D5D4, 0x1D5EE, 0x1D7EC) },
-      { name: "Circled Text", fn: t => circled(t) },
-      { name: "Squared Text", fn: t => squared(t) },
-      { name: "Small Capitals", fn: t => smallCaps(t) },
-      { name: "Spaced Wide", fn: t => t.split('').join(' ') },
-      { name: "Underlined", fn: t => t.split('').map(c => c + '\u0332').join('') },
-      { name: "Strikethrough", fn: t => t.split('').map(c => c + '\u0336').join('') }
-    ];
+    // Mappings
+    const devanagariMap = {
+      a:'ค', b:'๒', c:'င', d:'อ', e:'є', f:'Բ', g:'૭', h:'ђ', i:'เ', j:'ן', k:'к', l:'l', m:'म', n:'ภ', o:'๏', p:'ק', q:'૧', r:'૨', s:'ร', t:'੮', u:'น', v:'ง', w:'ฝ', x:'א', y:'ч', z:'౭',
+      A:'ค', B:'๒', C:'င', D:'อ', E:'є', F:'Բ', G:'૭', H:'ђ', I:'เ', J:'ן', K:'к', L:'L', M:'म', N:'ภ', O:'๏', P:'ק', Q:'૧', R:'૨', S:'ร', T:'੮', U:'น', V:'ง', W:'ฝ', X:'א', Y:'ч', Z:'౭'
+    };
 
-    function transform(str, capBase, lowBase, numBase) {
+    const currencyMap = {
+      a:'₳', b:'฿', c:'₵', d:'Đ', e:'Ɇ', f:'₣', g:'₲', h:'Ⱨ', i:'ł', j:'J', k:'₭', l:'Ⱡ', m:'₥', n:'₦', o:'Ø', p:'₱', q:'Q', r:'₹', s:'$', t:'₮', u:'Ʉ', v:'V', w:'₩', x:'Ӿ', y:'Ɏ', z:'Ⱬ',
+      A:'₳', B:'฿', C:'₵', D:'Đ', E:'Ɇ', F:'₣', G:'₲', H:'Ⱨ', I:'ł', J:'J', K:'₭', L:'Ⱡ', M:'₥', N:'₦', O:'Ø', P:'₱', Q:'Q', R:'₹', S:'$', T:'₮', U:'Ʉ', V:'V', W:'₩', X:'Ӿ', Y:'Ɏ', Z:'Ⱬ'
+    };
+
+    const smallCapsMap = {
+      a:'ᴀ', b:'ʙ', c:'ᴄ', d:'ᴅ', e:'ᴇ', f:'ꜰ', g:'ɢ', h:'ʜ', i:'ɪ', j:'ᴊ', k:'ᴋ', l:'ʟ', m:'ᴍ', n:'ɴ', o:'ᴏ', p:'ᴘ', q:'ǫ', r:'ʀ', s:'ѕ', t:'ᴛ', u:'ᴜ', v:'ᴠ', w:'ᴡ', x:'x', y:'ʏ', z:'ᴢ',
+      A:'ᴀ', B:'ʙ', C:'ᴄ', D:'ᴅ', E:'ᴇ', F:'ꜰ', G:'ɢ', H:'ʜ', I:'ɪ', J:'ᴊ', K:'ᴋ', L:'ʟ', M:'ᴍ', N:'ɴ', O:'ᴏ', P:'ᴘ', Q:'ǫ', R:'ʀ', S:'ѕ', T:'ᴛ', U:'ᴜ', V:'ᴠ', W:'ᴡ', X:'x', Y:'ʏ', z:'ᴢ'
+    };
+
+    const upsideDownMap = {
+      a:'ɐ', b:'q', c:'ɔ', d:'p', e:'ǝ', f:'ɟ', g:'ƃ', h:'ɥ', i:'ᴉ', j:'ɾ', k:'ʞ', l:'l', m:'ɯ', n:'u', o:'o', p:'d', q:'b', r:'ɹ', s:'s', t:'ʇ', u:'n', v:'ʌ', w:'ʍ', x:'x', y:'ʎ', z:'z',
+      A:'∀', B:'𐐒', C:'Ɔ', D:'p', E:'Ǝ', F:'Ⅎ', G:'פ', H:'H', I:'I', J:'ſ', K:'ʞ', L:'˥', M:'W', N:'N', O:'O', P:'Ԁ', Q:'Ό', R:'ᴚ', S:'S', T:'┴', U:'∩', V:'Λ', W:'M', X:'X', Y:'⅄', Z:'Z'
+    };
+
+    function mapReplace(str, mapObj) {
+      return str.split('').map(c => mapObj[c] || c).join('');
+    }
+
+    function unicodeShift(str, capBase, lowBase, numBase) {
       return str.split('').map(c => {
         const code = c.charCodeAt(0);
         if (code >= 65 && code <= 90 && capBase) return String.fromCodePoint(capBase + (code - 65));
@@ -66,43 +98,293 @@
       }).join('');
     }
 
-    function circled(str) {
-      return str.split('').map(c => {
-        const code = c.charCodeAt(0);
-        if (code >= 65 && code <= 90) return String.fromCodePoint(0x24B6 + (code - 65));
-        if (code >= 97 && code <= 122) return String.fromCodePoint(0x24D0 + (code - 97));
-        if (code >= 49 && code <= 57) return String.fromCodePoint(0x2460 + (code - 49));
-        if (code === 48) return '⓪';
-        return c;
-      }).join('');
+    // Core font generators
+    const coreFonts = [
+      { name: "Devanagari Indian Look", fn: t => mapReplace(t, devanagariMap) },
+      { name: "Currency Style (₹, $, ฿)", fn: t => mapReplace(t, currencyMap) },
+      { name: "Bold Cursive Script", fn: t => unicodeShift(t, 0x1D4D0, 0x1D4EA, 0) },
+      { name: "Light Cursive Script", fn: t => unicodeShift(t, 0x1D49C, 0x1D4B6, 0) },
+      { name: "Royal Fraktur / Gothic", fn: t => unicodeShift(t, 0x1D56C, 0x1D586, 0) },
+      { name: "Bold Fraktur", fn: t => unicodeShift(t, 0x1D5A0, 0x1D5BA, 0) },
+      { name: "Double Struck / Outline", fn: t => unicodeShift(t, 0x1D538, 0x1D552, 0x1D7D8) },
+      { name: "Sans-Serif Bold", fn: t => unicodeShift(t, 0x1D5D4, 0x1D5EE, 0x1D7EC) },
+      { name: "Sans-Serif Italic", fn: t => unicodeShift(t, 0x1D608, 0x1D622, 0) },
+      { name: "Monospace / Typewriter", fn: t => unicodeShift(t, 0x1D670, 0x1D68A, 0x1D7F6) },
+      { name: "Small Capitals", fn: t => mapReplace(t, smallCapsMap) },
+      { name: "Bubble / Circled", fn: t => t.split('').map(c => {
+          const code = c.charCodeAt(0);
+          if (code >= 65 && code <= 90) return String.fromCodePoint(0x24B6 + (code - 65));
+          if (code >= 97 && code <= 122) return String.fromCodePoint(0x24D0 + (code - 97));
+          return c;
+        }).join('') 
+      },
+      { name: "Square Boxed", fn: t => t.split('').map(c => {
+          const code = c.charCodeAt(0);
+          if (code >= 65 && code <= 90) return String.fromCodePoint(0x1F130 + (code - 65));
+          if (code >= 97 && code <= 122) return String.fromCodePoint(0x1F130 + (code - 97));
+          return c;
+        }).join('') 
+      },
+      { name: "Upside Down", fn: t => mapReplace(t, upsideDownMap).split('').reverse().join('') },
+      { name: "Spaced Wide Aesthetic", fn: t => t.split('').join(' ') },
+      { name: "Double Underline", fn: t => t.split('').map(c => c + '\u0333').join('') },
+      { name: "Strikethrough Cut", fn: t => t.split('').map(c => c + '\u0336').join('') },
+      { name: "Wavy Underline", fn: t => t.split('').map(c => c + '\u0330').join('') }
+    ];
+
+    // 190+ Combinatorial borders, gaming tags & wings
+    const frames = [
+      t => `꧁༺ ${t} ༻꧂`,
+      t => `⎝⎝✧ ${t} ✧⎠⎠`,
+      t => `★彡 ${t} 彡★`,
+      t => `♛ ${t} ♛`,
+      t => `⚔️ ${t} ⚔️`,
+      t => `ღ ${t} ღ`,
+      t => `❀ ${t} ❀`,
+      t => `✧･ﾟ: * ${t} *:･ﾟ✧`,
+      t => `『${t}』`,
+      t => `░▒▓█ ${t} █▓▒░`,
+      t => `⚡ ${t} ⚡`,
+      t => `🔥 ${t} 🔥`,
+      t => `彡[ ${t} ]彡`,
+      t => `ıllıllı ${t} ıllıllı`,
+      t => `★·.·´¯\`·.·★ ${t} ★·.·´¯\`·.·★`,
+      t => `°°°·.°·..·°¯°·._.· ${t} ·._.·°¯°·.·° .·°°°`,
+      t => `««——— ${t} ———»»`,
+      t => `【${t}】`,
+      t => `〖${t}〗`,
+      t => `〔${t}〕`,
+      t => `❖ ${t} ❖`,
+      t => `☬ ${t} ☬`,
+      t => `★ ${t} ★`,
+      t => `✪ ${t} ✪`,
+      t => `❂ ${t} ❂`,
+      t => `✿ ${t} ✿`,
+      t => `❄️ ${t} ❄️`,
+      t => `👑 ${t} 👑`,
+      t => `☠️ ${t} ☠️`,
+      t => `亗 ${t} 亗`,
+      t => `乡 ${t} 乡`,
+      t => `༺Leͥgeͣnͫd༻ ${t}`,
+      t => `★ᴾᴿᴼ★ ${t}`,
+      t => `꧁༒☬ ${t} ☬༒꧂`,
+      t => `⚡T O X I C⚡ ${t}`,
+      t => `『sʜʀᴋ』• ${t}`,
+      t => `°•.¸¸.•°¯°•.¸¸.•° ${t}`,
+      t => `(¯\`*•.¸,¤°´✿\`°¤,¸.•*´¯) ${t}`,
+      t => `•._.••´¯\`\`•.¸¸.•\` ${t} \`•.¸¸.•´´¯\`••._.•`,
+      t => `×º°”˜\`”°º× ${t} ×º°”˜\`”°º×`,
+      t => `•ิ_•ิ ${t}`,
+      t => `(◕‿◕) ${t} (◕‿◕)`,
+      t => `(｡♥‿♥｡) ${t}`,
+      t => `(っ◔◡◔)っ ♥ ${t} ♥`,
+      t => `˜”*°•.˜”*°• ${t} •°*”˜.•°*”˜`,
+      t => `☆࿐ཽ༵༆༒ ${t} ༒༆࿐ཽ༵☆`,
+      t => `°”˜¨¨˜”°º★ ${t} ★º°”˜¨¨˜”°`,
+      t => `◤ ${t} ◢`,
+      t => `☥ ${t} ☥`,
+      t => `⫷ ${t} ⫸`,
+      t => `╰☆☆ ${t} ☆☆╮`,
+      t => `*•.¸♡ ${t} ♡¸.•*`,
+      t => `,-*'\`^~\`'*-,._.,-*' ${t}`,
+      t => `■━■━■━■ ${t} ■━■━■━■`,
+      t => `╭∩╮ ${t} ╭∩╮`,
+      t => `[̲̅$̲̅(̲̅5̲̅)̲̅$̲̅] ${t}`,
+      t => `( ͡° ͜ʖ ͡°) ${t}`,
+      t => `ᕙ(⇀‸↼‶)ᕗ ${t}`,
+      t => `༒ ${t} ༒`,
+      t => `§ ${t} §`,
+      t => `† ${t} †`,
+      t => `‡ ${t} ‡`,
+      t => `⚝ ${t} ⚝`,
+      t => `᚛ ${t} ᚜`,
+      t => `⸻ ${t} ⸻`,
+      t => `⦃ ${t} ⦄`,
+      t => `⦅ ${t} ⦆`,
+      t => `⎝ ${t} ⎠`,
+      t => `⋛⋋ ${t} ⋌⋚`,
+      t => `« ${t} »`,
+      t => `‹ ${t} ›`,
+      t => `»»————- ${t} ————-««`,
+      t => `*+:｡.｡ ${t} ｡.｡:+*`,
+      t => `♥╣[-_-]╠♥ ${t}`,
+      t => `(✿◠‿◠) ${t}`,
+      t => `(◡‿◡✿) ${t}`,
+      t => `(◕ᴥ◕) ${t}`,
+      t => `龴ↀ◡ↀ龴 ${t}`,
+      t => `[¬º-°]¬ ${t}`,
+      t => `Ƹ̵̡Ӝ̵̨̄Ʒ ${t}`,
+      t => `彡★ ${t} ★彡`,
+      t => `*･ﾟﾟ･*:.｡..｡.:*ﾟ:*:✼✿ ${t}`,
+      t => `•°¯\`•• ${t} ••´¯°•`,
+      t => `|!¤*'~'‘¤!| ${t} |!¤*'~'‘¤!|`,
+      t => `•]••´º´•» ${t} «•´º´••[•`,
+      t => `§.•´¨'°÷•..× ${t} ×,.•'´¨'°÷•..§`,
+      t => `¸,ø¤º°\`°º¤ø,¸¸,ø¤º° ${t} °º¤ø,¸`,
+      t => `°l||l° °l||l° ${t} °l||l° °l||l°`,
+      t => `•♫•♬• ${t} •♬•♫•`,
+      t => `▄︻̷̿┻̿═━一 ${t}`,
+      t => `╾━╤デ╦︻ ${t}`,
+      t => `︻╦̵̵͇̿̿̿̿══╤─ ${t}`,
+      t => `⌖ ${t} ⌖`,
+      t => `➳ᴹᴿ°᭄ ${t}`,
+      t => `ᴏᴘ᭄ ${t}`,
+      t => `亗『LEGEND』亗 ${t}`,
+      t => `࿐ཽ༵ ${t}`,
+      t => `†_ ${t} _†`,
+      t => `★彡[ ${t} ]彡★`,
+      t => `«▒░ ${t} ░▒»`,
+      t => `『ᵀᵉᵃᵐ』${t}`,
+      t => `⑉ ${t} ⑉`,
+      t => `⟡ ${t} ⟡`,
+      t => `⟢ ${t} ⟣`,
+      t => `𑁍 ${t} 𑁍`,
+      t => `✤ ${t} ✤`,
+      t => `✣ ${t} ✣`,
+      t => `☍ ${t} ☍`,
+      t => `⚚ ${t} ⚚`,
+      t => `☄️ ${t} ☄️`,
+      t => `🪐 ${t} 🪐`,
+      t => `✦ ${t} ✦`,
+      t => `★彡 ( ${t} ) 彡★`,
+      t => `░ ${t} ░`,
+      t => `▓ ${t} ▓`,
+      t => `█▓▒░ ${t} ░▒▓█`,
+      t => `▀▄▀▄▀ ${t} ▀▄▀▄▀`,
+      t => `═━┈ ${t} ┈━═`,
+      t => `╭━─━─━─≪✠≫─━─━─━╮ ${t}`,
+      t => `•━═∞═━• ${t} •━═∞═━•`,
+      t => `═╬ ${t} ╬═`,
+      t => `• • • ${t} • • •`,
+      t => `~*~*~* ${t} ~*~*~*`,
+      t => `«« ${t} »»`,
+      t => `---=== ${t} ===---`,
+      t => `••.•´¯\`•.•• ${t} ••.•´¯\`•.••`,
+      t => `[-_-] ${t} [-_-]`,
+      t => `ᕦ(ò_óˇ)ᕤ ${t}`,
+      t => `(¬‿¬) ${t}`,
+      t => `(•‿•) ${t}`,
+      t => `(づ｡◕‿‿◕｡)づ ${t}`,
+      t => `(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ ${t}`,
+      t => `(͡° ͜ʖ ͡°)☞ ${t}`,
+      t => `(☞ﾟヮﾟ)☞ ${t}`,
+      t => `ಠ_ಠ ${t}`,
+      t => `(づ￣ ³￣)づ ${t}`,
+      t => `(▀̿Ĺ̯▀̿ ̿) ${t}`,
+      t => `༼ つ ◕_◕ ༽つ ${t}`,
+      t => `(ง'̀-'́)ง ${t}`,
+      t => `ʕ•ᴥ•ʔ ${t}`,
+      t => `(ᵔᴥᵔ) ${t}`,
+      t => `(ง •̀_•́)ง ${t}`,
+      t => `(✿ ♥‿♥) ${t}`,
+      t => `✧(≖ ◡ ≖✿) ${t}`,
+      t => `(★^O^★) ${t}`,
+      t => `(*^‿^*) ${t}`,
+      t => `(•ㅅ•) ${t}`,
+      t => `(─‿‿─) ${t}`,
+      t => `(；一_一) ${t}`,
+      t => `(ʘ‿ʘ) ${t}`,
+      t => `(¬_¬) ${t}`,
+      t => `(⊙_☉) ${t}`,
+      t => `ᕦ( ͡° ͜ʖ ͡°)ᕤ ${t}`,
+      t => `ᕦ(ò_ó)ᕤ ${t}`,
+      t => `( ⚆ _ ⚆ ) ${t}`,
+      t => `(°ロ°) ${t}`,
+      t => `(づ ◕‿◕ )づ ${t}`,
+      t => `(◕‿◕✿) ${t}`,
+      t => `(◕ᴗ◕✿) ${t}`,
+      t => `(¬‿¬)ノ ${t}`,
+      t => `(✿◠‿◠) ${t} (◠‿◠✿)`,
+      t => `(｡◕‿◕｡) ${t}`,
+      t => `★ ${t} ★`,
+      t => `✧ ${t} ✧`,
+      t => `✦ ${t} ✦`,
+      t => `☾ ${t} ☽`,
+      t => `✪ ${t} ✪`,
+      t => `❂ ${t} ❂`,
+      t => `☬ ${t} ☬`,
+      t => `⚔️ ${t} ⚔️`,
+      t => `🛡️ ${t} 🛡️`,
+      t => `💎 ${t} 💎`,
+      t => `🌹 ${t} 🌹`,
+      t => `🌺 ${t} 🌺`,
+      t => `🌸 ${t} 🌸`,
+      t => `🌼 ${t} 🌼`,
+      t => `🦋 ${t} 🦋`,
+      t => `🕊️ ${t} 🕊️`,
+      t => `🍀 ${t} 🍀`,
+      t => `🍁 ${t} 🍁`,
+      t => `🍄 ${t} 🍄`,
+      t => `⭐ ${t} ⭐`,
+      t => `🌟 ${t} 🌟`,
+      t => `✨ ${t} ✨`,
+      t => `💥 ${t} 💥`,
+      t => `🎯 ${t} 🎯`,
+      t => `🎲 ${t} 🎲`,
+      t => `🎵 ${t} 🎵`,
+      t => `🎶 ${t} 🎶`,
+      t => `🎸 ${t} 🎸`,
+      t => `🧸 ${t} 🧸`,
+      t => `🎀 ${t} 🎀`,
+      t => `🪄 ${t} 🪄`,
+      t => `👑 ${t} 👑`,
+      t => `🏆 ${t} 🏆`
+    ];
+
+    function showToast() {
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 1400);
     }
 
-    function squared(str) {
-      return str.split('').map(c => {
-        const code = c.charCodeAt(0);
-        if (code >= 65 && code <= 90) return String.fromCodePoint(0x1F130 + (code - 65));
-        if (code >= 97 && code <= 122) return String.fromCodePoint(0x1F130 + (code - 97));
-        return c;
-      }).join('');
-    }
-
-    function smallCaps(str) {
-      const map = { a:'ᴀ', b:'ʙ', c:'ᴄ', d:'ᴅ', e:'ᴇ', f:'ꜰ', g:'ɢ', h:'ʜ', i:'ɪ', j:'ᴊ', k:'ᴋ', l:'ʟ', m:'ᴍ', n:'ɴ', o:'ᴏ', p:'ᴘ', q:'ǫ', r:'ʀ', s:'ѕ', t:'ᴛ', u:'ᴜ', v:'ᴠ', w:'ᴡ', x:'x', y:'ʏ', z:'ᴢ' };
-      return str.toLowerCase().split('').map(c => map[c] || c).join('');
-    }
-
-    function render() {
-      const val = input.value || "Sample";
+    function renderAll() {
+      const val = input.value.trim() || "Rahul";
       results.innerHTML = '';
 
-      styles.forEach(st => {
-        const converted = st.fn(val);
+      let allOutputs = [];
+
+      // 1. Core styles
+      coreFonts.forEach(cf => {
+        allOutputs.push({ label: cf.name, text: cf.fn(val) });
+      });
+
+      // 2. Hindi Look with Frames
+      const hindiVal = mapReplace(val, devanagariMap);
+      frames.slice(0, 40).forEach((fr, idx) => {
+        allOutputs.push({ label: `Hindi Bio Style #${idx + 1}`, text: fr(hindiVal) });
+      });
+
+      // 3. Small Caps with Frames
+      const smallCapsVal = mapReplace(val, smallCapsMap);
+      frames.slice(40, 90).forEach((fr, idx) => {
+        allOutputs.push({ label: `Small Caps Aesthetic #${idx + 1}`, text: fr(smallCapsVal) });
+      });
+
+      // 4. Cursive with Frames
+      const cursiveVal = unicodeShift(val, 0x1D4D0, 0x1D4EA, 0);
+      frames.slice(90, 140).forEach((fr, idx) => {
+        allOutputs.push({ label: `Cursive Wing Style #${idx + 1}`, text: fr(cursiveVal) });
+      });
+
+      // 5. Normal text with gaming frames & kaomoji
+      frames.slice(140).forEach((fr, idx) => {
+        allOutputs.push({ label: `Gamer Tag & Kaomoji #${idx + 1}`, text: fr(val) });
+      });
+
+      // Update badge count
+      countBadge.textContent = `${allOutputs.length} Styles Generated`;
+
+      // Render cards
+      const fragment = document.createDocumentFragment();
+
+      allOutputs.forEach((item, index) => {
         const card = document.createElement('div');
-        card.className = "bg-white p-3.5 rounded-xl border border-slate-200 flex items-center justify-between shadow-sm hover:border-violet-300 transition";
+        card.className = "bg-white p-3 rounded-xl border border-slate-200 flex items-center justify-between shadow-sm hover:border-violet-300 transition";
         card.innerHTML = `
-          <div class="overflow-hidden mr-3">
-            <span class="text-xs text-slate-400 block">${st.name}</span>
-            <span class="text-base text-slate-800 break-all">${converted}</span>
+          <div class="overflow-hidden mr-2">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">#${index + 1} ${item.label}</span>
+            <span class="text-sm sm:text-base text-slate-900 break-all font-medium select-all">${item.text}</span>
           </div>
           <button class="copy-btn shrink-0 px-3 py-1.5 text-xs font-bold text-violet-700 bg-violet-50 hover:bg-violet-100 rounded-lg border border-violet-200 active:scale-95 transition">
             Copy
@@ -111,22 +393,25 @@
 
         const btn = card.querySelector('.copy-btn');
         btn.addEventListener('click', () => {
-          navigator.clipboard.writeText(converted).then(() => {
+          navigator.clipboard.writeText(item.text).then(() => {
             btn.textContent = 'Copied!';
             btn.className = "shrink-0 px-3 py-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 rounded-lg border border-emerald-200";
+            showToast();
             setTimeout(() => {
               btn.textContent = 'Copy';
               btn.className = "shrink-0 px-3 py-1.5 text-xs font-bold text-violet-700 bg-violet-50 hover:bg-violet-100 rounded-lg border border-violet-200";
-            }, 1500);
+            }, 1200);
           });
         });
 
-        results.appendChild(card);
+        fragment.appendChild(card);
       });
+
+      results.appendChild(fragment);
     }
 
-    input.addEventListener('input', render);
-    render();
+    input.addEventListener('input', renderAll);
+    renderAll();
   </script>
 </body>
 </html>
